@@ -6,6 +6,9 @@ public class Hunnie {
 
         String lines = "____________________________________________________________";
         String botName = "Hunnie";
+        String[] tasks = new String[100];
+        int numberOfTasks = 0;
+
         System.out.println(lines);
         System.out.println("Hello! I'm " + botName);
         System.out.println("What can I do for you?");
@@ -18,8 +21,16 @@ public class Hunnie {
                 System.out.println("Bye. Hope to see you again soon!");
                 System.out.println(lines);
                 break;
-            } else {
-                System.out.println(cmd);
+            }
+            else if (cmd.equals("list")) {
+                for (int i = 0; i < numberOfTasks; i++) {
+                    System.out.println((i + 1) + ". " + tasks[i]);
+                }
+            }
+            else {
+                tasks[numberOfTasks] = cmd;
+                System.out.println("added: "+ cmd);
+                numberOfTasks++;
             }
             System.out.println(lines);
         }
