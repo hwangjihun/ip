@@ -52,7 +52,7 @@ public class Hunnie {
                     String[] timeSpan = cmd[1].split(" /from | /to ");
                     tasks[numberOfTasks] = new Event(timeSpan[0], timeSpan[1], timeSpan[2]);
                 }
-                System.out.println("Got it. I've added this task: ");
+                System.out.println("Got it. I've added this task:");
                 System.out.println(tasks[numberOfTasks]);
                 numberOfTasks++;
                 System.out.println("Now you have " + numberOfTasks + " tasks in the list.");
