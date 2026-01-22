@@ -68,6 +68,13 @@ public class Hunnie {
 
     }
 
+    private void deleteTask(int taskID) {
+        System.out.println("Noted. I've removed this task:");
+        System.out.println(tasks.get(taskID));
+        this.tasks.remove(taskID);
+        System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
+    }
+
     public static void main(String[] args){
         Hunnie bot = new Hunnie();
         Scanner scanner = new Scanner(System.in);
@@ -98,7 +105,13 @@ public class Hunnie {
                 else if (bot.taskTypes.contains(cmd[0])) {
                     String taskDesc = cmd.length > 1 ? cmd[1] : "";
                     bot.addTask(cmd[0], taskDesc);
-                } else {
+                }
+                else if (cmd[0].equals("delete")) {
+                    int taskID = Integer.parseInt(cmd[1]) - 1;
+                    bot.deleteTask(taskID);
+                }
+
+                else {
                     throw new HunnieException("I am sorry. Idk what that means at the moment!");
                 }
             } catch (HunnieException e) {
