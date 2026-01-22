@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Hunnie {
@@ -6,6 +7,7 @@ public class Hunnie {
     private static final String BOTNAME = "Hunnie";
 
     private ArrayList<Task> tasks;
+    private ArrayList<String> taskTypes = new ArrayList<String>(List.of("todo", "event", "deadline"));
 
     public Hunnie() {
         this.tasks = new ArrayList<>();
@@ -42,7 +44,10 @@ public class Hunnie {
         System.out.println(this.tasks.get(taskID));
     }
 
-    private void addTask(String taskType, String taskDesc) {
+    private void addTask(String taskType, String taskDesc) throws HunnieException {
+        if (taskDesc.trim().isEmpty()) {
+            throw new HunnieException("Hey, the description of a " + taskType + " task should not be empty!");
+        }
         Task newTask = null;
 
         if (taskType.equals("todo")) {
@@ -54,40 +59,50 @@ public class Hunnie {
             String[] timeSpan = taskDesc.split(" /from | /to ");
             newTask = new Event(timeSpan[0], timeSpan[1], timeSpan[2]);
         }
-        this.tasks.add(newTask);
-        System.out.println("Got it. I've added this task:");
-        System.out.println(newTask);
-        System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
+        if (newTask != null) {
+            this.tasks.add(newTask);
+            System.out.println("Got it. I've added this task:");
+            System.out.println(newTask);
+            System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
+        }
+
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         Hunnie bot = new Hunnie();
         Scanner scanner = new Scanner(System.in);
 
         bot.greet();
 
         while (true) {
-            String command = scanner.nextLine();
-            String[] cmd = command.split(" ", 2);
+            try {
+                String command = scanner.nextLine();
+                String[] cmd = command.split(" ", 2);
 
-            System.out.println(LINES);
-            if (cmd[0].equals("bye")) {
-                bot.goodbye();
-                break;
-            }
-            else if (cmd[0].equals("list")) {
-                bot.getList();
-            }
-            else if (cmd[0].equals("mark")) {
-                int taskID = Integer.parseInt(cmd[1]) - 1;
-                bot.markAsDone(taskID);
-            }
-            else if (cmd[0].equals("unmark")) {
-                int taskID = Integer.parseInt(cmd[1]) - 1;
-                bot.unmark(taskID);
-            }
-            else {
-                bot.addTask(cmd[0], cmd[1]);
+                System.out.println(LINES);
+                if (cmd[0].equals("bye")) {
+                    bot.goodbye();
+                    break;
+                }
+                else if (cmd[0].equals("list")) {
+                    bot.getList();
+                }
+                else if (cmd[0].equals("mark")) {
+                    int taskID = Integer.parseInt(cmd[1]) - 1;
+                    bot.markAsDone(taskID);
+                }
+                else if (cmd[0].equals("unmark")) {
+                    int taskID = Integer.parseInt(cmd[1]) - 1;
+                    bot.unmark(taskID);
+                }
+                else if (bot.taskTypes.contains(cmd[0])) {
+                    String taskDesc = cmd.length > 1 ? cmd[1] : "";
+                    bot.addTask(cmd[0], taskDesc);
+                } else {
+                    throw new HunnieException("I am sorry. Idk what that means at the moment!");
+                }
+            } catch (HunnieException e) {
+                System.out.println(e.getMessage());
             }
             System.out.println(LINES);
         }
