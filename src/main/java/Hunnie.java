@@ -7,7 +7,6 @@ public class Hunnie {
     private static final String BOTNAME = "Hunnie";
 
     private ArrayList<Task> tasks;
-    private ArrayList<String> taskTypes = new ArrayList<String>(List.of("todo", "event", "deadline"));
 
     public Hunnie() {
         this.tasks = new ArrayList<>();
@@ -44,21 +43,26 @@ public class Hunnie {
         System.out.println(this.tasks.get(taskID));
     }
 
-    private void addTask(String taskType, String taskDesc) throws HunnieException {
+    private void addTask(TaskType taskType, String taskDesc) throws HunnieException {
         if (taskDesc.trim().isEmpty()) {
             throw new HunnieException("Hey, the description of a " + taskType + " task should not be empty!");
         }
         Task newTask = null;
 
-        if (taskType.equals("todo")) {
+        switch (taskType) {
+        case TODO:
             newTask = new ToDo(taskDesc);
-        } else if (taskType.equals("deadline")) {
+            break;
+        case DEADLINE:
             String[] deadline = taskDesc.split(" /by ");
             newTask = new Deadline(deadline[0], deadline[1]);
-        } else if (taskType.equals("event")) {
+            break;
+        case EVENT:
             String[] timeSpan = taskDesc.split(" /from | /to ");
             newTask = new Event(timeSpan[0], timeSpan[1], timeSpan[2]);
+            break;
         }
+
         if (newTask != null) {
             this.tasks.add(newTask);
             System.out.println("Got it. I've added this task:");
@@ -102,17 +106,18 @@ public class Hunnie {
                     int taskID = Integer.parseInt(cmd[1]) - 1;
                     bot.unmark(taskID);
                 }
-                else if (bot.taskTypes.contains(cmd[0])) {
-                    String taskDesc = cmd.length > 1 ? cmd[1] : "";
-                    bot.addTask(cmd[0], taskDesc);
-                }
                 else if (cmd[0].equals("delete")) {
                     int taskID = Integer.parseInt(cmd[1]) - 1;
                     bot.deleteTask(taskID);
                 }
-
                 else {
-                    throw new HunnieException("I am sorry. Idk what that means at the moment!");
+                    TaskType taskType = TaskType.fromString(cmd[0]);
+                    if (taskType != null) {
+                        String taskDesc = cmd.length > 1 ? cmd[1] : "";
+                        bot.addTask(taskType, taskDesc);
+                    } else {
+                        throw new HunnieException("I am sorry. Idk what that means at the moment!");
+                    }
                 }
             } catch (HunnieException e) {
                 System.out.println(e.getMessage());
