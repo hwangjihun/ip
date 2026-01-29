@@ -1,5 +1,5 @@
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Hunnie {
@@ -7,9 +7,19 @@ public class Hunnie {
     private static final String BOTNAME = "Hunnie";
 
     private ArrayList<Task> tasks;
+    private Storage storage;
 
     public Hunnie() {
-        this.tasks = new ArrayList<>();
+        this.storage = new Storage();
+        this.tasks = storage.load();
+    }
+
+    private void saveToStorage() {
+        try {
+            storage.save(tasks);
+        } catch (IOException e) {
+            System.out.println("Warning: Could not save tasks to file: " + e.getMessage());
+        }
     }
 
     private void greet() {
@@ -35,12 +45,14 @@ public class Hunnie {
         this.tasks.get(taskID).mark();
         System.out.println("Nice! I've marked this task as done:");
         System.out.println(this.tasks.get(taskID));
+        saveToStorage();
     }
 
     private void unmark(int taskID) {
         this.tasks.get(taskID).unMark();
         System.out.println("OK, I've marked this task as not done yet:");
         System.out.println(this.tasks.get(taskID));
+        saveToStorage();
     }
 
     private void addTask(TaskType taskType, String taskDesc) throws HunnieException {
@@ -68,8 +80,8 @@ public class Hunnie {
             System.out.println("Got it. I've added this task:");
             System.out.println(newTask);
             System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
+            saveToStorage();
         }
-
     }
 
     private void deleteTask(int taskID) {
@@ -77,6 +89,7 @@ public class Hunnie {
         System.out.println(tasks.get(taskID));
         this.tasks.remove(taskID);
         System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
+        saveToStorage();
     }
 
     public static void main(String[] args){
