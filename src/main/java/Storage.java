@@ -1,11 +1,14 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
     private static final String PATH = "src/main/data/hunnie.txt";
+    private static final DateTimeFormatter STORAGE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final String filePath;
 
     public Storage() {
@@ -57,9 +60,12 @@ public class Storage {
         if (task instanceof ToDo todo) {
             return "T | " + isDone + " | " + todo.getDescription();
         } else if (task instanceof Deadline deadline) {
-            return "D | " + isDone + " | " + deadline.getDescription() + " | " + deadline.getBy();
+            String by = deadline.getBy().format(STORAGE_FORMAT);
+            return "D | " + isDone + " | " + deadline.getDescription() + " | " + by;
         } else if (task instanceof Event event) {
-            return "E | " + isDone + " | " + event.getDescription() + " | " + event.getFrom() + " | " + event.getTo();
+            String from = event.getFrom().format(STORAGE_FORMAT);
+            String to = event.getTo().format(STORAGE_FORMAT);
+            return "E | " + isDone + " | " + event.getDescription() + " | " + from + " | " + to;
         }
 
         return "";

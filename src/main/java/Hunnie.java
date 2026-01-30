@@ -79,7 +79,7 @@ public class Hunnie {
             this.tasks.add(newTask);
             System.out.println("Got it. I've added this task:");
             System.out.println(newTask);
-            System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
+            System.out.println("Now you have " + this.tasks.size() + " task(s) in the list.");
             saveToStorage();
         }
     }
@@ -88,7 +88,7 @@ public class Hunnie {
         System.out.println("Noted. I've removed this task:");
         System.out.println(tasks.get(taskID));
         this.tasks.remove(taskID);
-        System.out.println("Now you have " + this.tasks.size() + " tasks in the list.");
+        System.out.println("Now you have " + this.tasks.size() + " task(s) in the list.");
         saveToStorage();
     }
 
@@ -121,6 +121,9 @@ public class Hunnie {
                 }
                 else if (cmd[0].equals("delete")) {
                     int taskID = Integer.parseInt(cmd[1]) - 1;
+                    if (taskID < 0 || taskID >= bot.tasks.size()) {
+                        throw new HunnieException("Invalid task number! You only have " + bot.tasks.size() + " task(s).");
+                    }
                     bot.deleteTask(taskID);
                 }
                 else {
@@ -132,9 +135,12 @@ public class Hunnie {
                         throw new HunnieException("I am sorry. Idk what that means at the moment!");
                     }
                 }
-            } catch (HunnieException e) {
+            } catch (HunnieException | IllegalArgumentException e) {
                 System.out.println(e.getMessage());
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Invalid command format! Please check your input again ^^");
             }
+
             System.out.println(LINES);
         }
     }
