@@ -1,147 +1,146 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Hunnie {
-    private static final String LINES = "____________________________________________________________";
-    private static final String BOTNAME = "Hunnie";
+    private final Storage storage;
+    private TaskList tasks;
+    private final Ui ui;
 
-    private ArrayList<Task> tasks;
-    private Storage storage;
-
-    public Hunnie() {
-        this.storage = new Storage();
-        this.tasks = storage.load();
+    public Hunnie(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
+        try {
+            tasks = new TaskList(storage.load());
+        } catch (HunnieException e) {
+            ui.showLoadingError();
+            tasks = new TaskList();
+        }
     }
 
     private void saveToStorage() {
         try {
-            storage.save(tasks);
+            storage.save(tasks.getAllTasks());
         } catch (IOException e) {
-            System.out.println("Warning: Could not save tasks to file: " + e.getMessage());
+            ui.showSaveError(e.getMessage());
         }
     }
 
-    private void greet() {
-        System.out.println(LINES);
-        System.out.println("Hello! I'm " + BOTNAME);
-        System.out.println("What can I do for you?");
-        System.out.println(LINES);
-    }
-
-    private void goodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(LINES);
-    }
-
-    private void getList() {
-        System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < this.tasks.size(); i++) {
-            System.out.println((i + 1) + "." + this.tasks.get(i));
-        }
-    }
-
-    private void markAsDone(int taskID) {
-        this.tasks.get(taskID).mark();
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(this.tasks.get(taskID));
+    private void handleMarkCommand(Parser.ParsedCommand parsedCommand) throws HunnieException {
+        int taskIndex = parsedCommand.getTaskNumber();
+        tasks.mark(taskIndex);
+        ui.showTaskMarked(tasks.get(taskIndex));
         saveToStorage();
     }
 
-    private void unmark(int taskID) {
-        this.tasks.get(taskID).unMark();
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(this.tasks.get(taskID));
+    private void handleUnmarkCommand(Parser.ParsedCommand parsedCommand) throws HunnieException {
+        int taskIndex = parsedCommand.getTaskNumber();
+        tasks.unmark(taskIndex);
+        ui.showTaskUnmarked(tasks.get(taskIndex));
         saveToStorage();
     }
 
-    private void addTask(TaskType taskType, String taskDesc) throws HunnieException {
-        if (taskDesc.trim().isEmpty()) {
-            throw new HunnieException("Hey, the description of a " + taskType + " task should not be empty!");
-        }
-        Task newTask = null;
-
-        switch (taskType) {
-        case TODO:
-            newTask = new ToDo(taskDesc);
-            break;
-        case DEADLINE:
-            String[] deadline = taskDesc.split(" /by ");
-            newTask = new Deadline(deadline[0], deadline[1]);
-            break;
-        case EVENT:
-            String[] timeSpan = taskDesc.split(" /from | /to ");
-            newTask = new Event(timeSpan[0], timeSpan[1], timeSpan[2]);
-            break;
-        }
-
-        if (newTask != null) {
-            this.tasks.add(newTask);
-            System.out.println("Got it. I've added this task:");
-            System.out.println(newTask);
-            System.out.println("Now you have " + this.tasks.size() + " task(s) in the list.");
-            saveToStorage();
-        }
-    }
-
-    private void deleteTask(int taskID) {
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(tasks.get(taskID));
-        this.tasks.remove(taskID);
-        System.out.println("Now you have " + this.tasks.size() + " task(s) in the list.");
+    private void handleDeleteCommand(Parser.ParsedCommand parsedCommand) throws HunnieException {
+        int taskIndex = parsedCommand.getTaskNumber();
+        Task taskToDelete = tasks.get(taskIndex);
+        tasks.delete(taskIndex);
+        ui.showTaskDeleted(taskToDelete, tasks.size());
         saveToStorage();
     }
 
-    public static void main(String[] args){
-        Hunnie bot = new Hunnie();
+    private void handleTodoCommand(Parser.ParsedCommand parsedCommand) throws HunnieException {
+        String description = parsedCommand.getArguments().trim();
+        if (description.isEmpty()) {
+            throw new HunnieException("Hey, the description of a todo task should not be empty!");
+        }
+        Task newTask = new ToDo(description);
+        tasks.add(newTask);
+        ui.showTaskAdded(newTask, tasks.size());
+        saveToStorage();
+    }
+
+    private void handleDeadlineCommand(Parser.ParsedCommand parsedCommand) throws HunnieException {
+        String[] parts = Parser.parseDeadline(parsedCommand.getArguments());
+        String description = parts[0].trim();
+        String by = parts[1].trim();
+
+        if (description.isEmpty()) {
+            throw new HunnieException("Hey, the description of a deadline task should not be empty!");
+        }
+
+        Task newTask = new Deadline(description, by);
+        tasks.add(newTask);
+        ui.showTaskAdded(newTask, tasks.size());
+        saveToStorage();
+    }
+
+    private void handleEventCommand(Parser.ParsedCommand parsedCommand) throws HunnieException {
+        String[] parts = Parser.parseEvent(parsedCommand.getArguments());
+        String description = parts[0].trim();
+        String from = parts[1].trim();
+        String to = parts[2].trim();
+
+        if (description.isEmpty()) {
+            throw new HunnieException("Hey, the description of an event task should not be empty!");
+        }
+
+        Task newTask = new Event(description, from, to);
+        tasks.add(newTask);
+        ui.showTaskAdded(newTask, tasks.size());
+        saveToStorage();
+    }
+
+    public void run() {
+        ui.showWelcome();
         Scanner scanner = new Scanner(System.in);
-
-        bot.greet();
 
         while (true) {
             try {
-                String command = scanner.nextLine();
-                String[] cmd = command.split(" ", 2);
+                String input = scanner.nextLine();
+                ui.showLine();
 
-                System.out.println(LINES);
-                if (cmd[0].equals("bye")) {
-                    bot.goodbye();
+                Parser.ParsedCommand parsedCommand = Parser.parse(input);
+
+                switch (parsedCommand.getCommandType()) {
+                case BYE:
+                    ui.showGoodbye();
+                    scanner.close();
+                    return;
+                case LIST:
+                    ui.showTaskList(tasks);
                     break;
-                }
-                else if (cmd[0].equals("list")) {
-                    bot.getList();
-                }
-                else if (cmd[0].equals("mark")) {
-                    int taskID = Integer.parseInt(cmd[1]) - 1;
-                    bot.markAsDone(taskID);
-                }
-                else if (cmd[0].equals("unmark")) {
-                    int taskID = Integer.parseInt(cmd[1]) - 1;
-                    bot.unmark(taskID);
-                }
-                else if (cmd[0].equals("delete")) {
-                    int taskID = Integer.parseInt(cmd[1]) - 1;
-                    if (taskID < 0 || taskID >= bot.tasks.size()) {
-                        throw new HunnieException("Invalid task number! You only have " + bot.tasks.size() + " task(s).");
-                    }
-                    bot.deleteTask(taskID);
-                }
-                else {
-                    TaskType taskType = TaskType.fromString(cmd[0]);
-                    if (taskType != null) {
-                        String taskDesc = cmd.length > 1 ? cmd[1] : "";
-                        bot.addTask(taskType, taskDesc);
-                    } else {
-                        throw new HunnieException("I am sorry. Idk what that means at the moment!");
-                    }
+                case MARK:
+                    handleMarkCommand(parsedCommand);
+                    break;
+                case UNMARK:
+                    handleUnmarkCommand(parsedCommand);
+                    break;
+                case DELETE:
+                    handleDeleteCommand(parsedCommand);
+                    break;
+                case TODO:
+                    handleTodoCommand(parsedCommand);
+                    break;
+                case DEADLINE:
+                    handleDeadlineCommand(parsedCommand);
+                    break;
+                case EVENT:
+                    handleEventCommand(parsedCommand);
+                    break;
+                case UNKNOWN:
+                default:
+                    throw new HunnieException("I am sorry. Idk what that means at the moment!");
                 }
             } catch (HunnieException | IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            } catch (ArrayIndexOutOfBoundsException e) {
-                System.out.println("Invalid command format! Please check your input again ^^");
+                ui.showError(e.getMessage());
+            } catch (Exception e) {
+                ui.showError("Invalid command format! Please check your input again ^^");
             }
 
-            System.out.println(LINES);
+            ui.showLine();
         }
+    }
+
+    public static void main(String[] args) {
+        new Hunnie("src/main/data/hunnie.txt").run();
     }
 }
