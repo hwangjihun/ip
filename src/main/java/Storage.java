@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -15,7 +14,11 @@ public class Storage {
         this.filePath = PATH;
     }
 
-    public ArrayList<Task> load() {
+    public Storage(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public ArrayList<Task> load() throws HunnieException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(this.filePath);
 
@@ -109,14 +112,5 @@ public class Storage {
         }
 
         return task;
-    }
-
-    // test code
-    public static void main(String[] args) {
-        Storage storage = new Storage();
-        ArrayList<Task> tasks = storage.load();
-        for (Task task : tasks) {
-            System.out.println(task);
-        }
     }
 }
