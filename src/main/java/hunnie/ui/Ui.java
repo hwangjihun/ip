@@ -1,3 +1,9 @@
+package hunnie.ui;
+
+import hunnie.exception.HunnieException;
+import hunnie.task.Task;
+import hunnie.task.TaskList;
+
 import java.util.Scanner;
 
 public class Ui {

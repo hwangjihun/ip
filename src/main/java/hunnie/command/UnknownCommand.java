@@ -1,3 +1,10 @@
+package hunnie.command;
+
+import hunnie.exception.HunnieException;
+import hunnie.storage.Storage;
+import hunnie.task.TaskList;
+import hunnie.ui.Ui;
+
 public class UnknownCommand extends Command {
 
     @Override

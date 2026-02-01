@@ -1,3 +1,11 @@
+package hunnie.storage;
+
+import hunnie.exception.HunnieException;
+import hunnie.task.Deadline;
+import hunnie.task.Event;
+import hunnie.task.Task;
+import hunnie.task.ToDo;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

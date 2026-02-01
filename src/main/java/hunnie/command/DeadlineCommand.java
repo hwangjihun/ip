@@ -1,3 +1,12 @@
+package hunnie.command;
+
+import hunnie.exception.HunnieException;
+import hunnie.storage.Storage;
+import hunnie.task.Deadline;
+import hunnie.task.Task;
+import hunnie.task.TaskList;
+import hunnie.ui.Ui;
+
 import java.io.IOException;
 
 public class DeadlineCommand extends Command {

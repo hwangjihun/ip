@@ -1,4 +1,11 @@
-import java.io.IOException;
+package hunnie;
+
+import hunnie.command.Command;
+import hunnie.exception.HunnieException;
+import hunnie.parser.Parser;
+import hunnie.storage.Storage;
+import hunnie.task.TaskList;
+import hunnie.ui.Ui;
 
 public class Hunnie {
     private final Storage storage;

@@ -1,3 +1,17 @@
+package hunnie.parser;
+
+import hunnie.command.Command;
+import hunnie.command.ExitCommand;
+import hunnie.command.ListCommand;
+import hunnie.command.MarkCommand;
+import hunnie.command.UnmarkCommand;
+import hunnie.command.DeleteCommand;
+import hunnie.command.ToDoCommand;
+import hunnie.command.DeadlineCommand;
+import hunnie.command.EventCommand;
+import hunnie.command.UnknownCommand;
+import hunnie.exception.HunnieException;
+
 public class Parser {
 
     public static Command parse(String fullCommand) throws HunnieException {

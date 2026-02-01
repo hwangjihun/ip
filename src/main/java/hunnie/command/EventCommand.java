@@ -1,3 +1,11 @@
+package hunnie.command;
+
+import hunnie.exception.HunnieException;
+import hunnie.storage.Storage;
+import hunnie.task.TaskList;
+import hunnie.ui.Ui;
+import hunnie.task.Task;
+import hunnie.task.Event;
 import java.io.IOException;
 
 public class EventCommand extends Command {

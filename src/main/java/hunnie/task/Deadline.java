@@ -1,18 +1,20 @@
+package hunnie.task;
+
+import hunnie.exception.HunnieException;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class Event extends Task {
+public class Deadline extends Task {
 
-    protected LocalDate from;
-    protected LocalDate to;
+    protected LocalDate by;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
-    public Event(String description, String from, String to) throws HunnieException{
+    public Deadline(String description, String by) throws HunnieException {
         super(description);
-        this.from = parseDate(from);
-        this.to = parseDate(to);
+        this.by = parseDate(by);
     }
 
     private LocalDate parseDate(String dateStr) throws HunnieException {
@@ -23,20 +25,16 @@ public class Event extends Task {
         }
     }
 
-    public LocalDate getFrom() {
-        return from;
+    public LocalDate getBy() {
+        return by;
     }
 
-    public LocalDate getTo() {
-        return to;
-    }
-
-    private String formatDate(LocalDate date) {
-        return date.format(OUTPUT_FORMAT);
+    public String getByString() {
+        return by.format(OUTPUT_FORMAT);
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + formatDate(this.from) + " to: " + formatDate(this.to) + ")";
+        return "[D]" + super.toString() + " (by: " + getByString() + ")";
     }
 }

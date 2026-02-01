@@ -1,3 +1,7 @@
+package hunnie.task;
+
+import hunnie.exception.HunnieException;
+
 import java.util.ArrayList;
 
 public class TaskList {
