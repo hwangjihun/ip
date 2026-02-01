@@ -1,79 +1,47 @@
 public class Parser {
 
-    public enum Command {
-        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT, UNKNOWN
-    }
-
-    public static class ParsedCommand {
-        private final Command commandType;
-        private final String arguments;
-
-        public ParsedCommand(Command commandType, String arguments) {
-            this.commandType = commandType;
-            this.arguments = arguments;
+    public static Command parse(String fullCommand) throws HunnieException {
+        if (fullCommand == null || fullCommand.trim().isEmpty()) {
+            throw new HunnieException("Empty commands are not allowed!!!");
         }
 
-        public Command getCommandType() {
-            return commandType;
-        }
+        String[] cmdParts = fullCommand.trim().split(" ", 2);
+        String cmd = cmdParts[0].toLowerCase();
+        String args = cmdParts.length > 1 ? cmdParts[1] : "";
 
-        public String getArguments() {
-            return arguments;
-        }
-
-        public int getTaskNumber() throws HunnieException {
-            try {
-                return Integer.parseInt(arguments.trim()) - 1;
-            } catch (NumberFormatException e) {
-                throw new HunnieException("Invalid task number format!");
-            }
-        }
-    }
-
-    public static ParsedCommand parse(String input) throws HunnieException {
-        if (input == null || input.trim().isEmpty()) {
-            throw new HunnieException("Please enter a command!");
-        }
-
-        String[] parts = input.trim().split(" ", 2);
-        String commandWord = parts[0].toLowerCase();
-        String arguments = parts.length > 1 ? parts[1] : "";
-
-        Command command;
-        switch (commandWord) {
+        switch (cmd) {
         case "bye":
-            command = Command.BYE;
-            break;
+            return new ExitCommand();
         case "list":
-            command = Command.LIST;
-            break;
+            return new ListCommand();
         case "mark":
-            command = Command.MARK;
-            break;
+            return new MarkCommand(parseTaskNumber(args));
         case "unmark":
-            command = Command.UNMARK;
-            break;
+            return new UnmarkCommand(parseTaskNumber(args));
         case "delete":
-            command = Command.DELETE;
-            break;
+            return new DeleteCommand(parseTaskNumber(args));
         case "todo":
-            command = Command.TODO;
-            break;
+            return new ToDoCommand(args);
         case "deadline":
-            command = Command.DEADLINE;
-            break;
+            String[] deadlineParts = parseDeadline(args);
+            return new DeadlineCommand(deadlineParts[0].trim(), deadlineParts[1].trim());
         case "event":
-            command = Command.EVENT;
-            break;
+            String[] eventParts = parseEvent(args);
+            return new EventCommand(eventParts[0].trim(), eventParts[1].trim(), eventParts[2].trim());
         default:
-            command = Command.UNKNOWN;
-            break;
+            return new UnknownCommand();
         }
-
-        return new ParsedCommand(command, arguments);
     }
 
-    public static String[] parseDeadline(String arguments) throws HunnieException {
+    private static int parseTaskNumber(String arguments) throws HunnieException {
+        try {
+            return Integer.parseInt(arguments.trim()) - 1;
+        } catch (NumberFormatException e) {
+            throw new HunnieException("Invalid task number format!");
+        }
+    }
+
+    private static String[] parseDeadline(String arguments) throws HunnieException {
         String[] parts = arguments.split(" /by ");
         if (parts.length != 2) {
             throw new HunnieException("Invalid deadline format! Use: deadline <description> /by <date>");
@@ -81,7 +49,7 @@ public class Parser {
         return parts;
     }
 
-    public static String[] parseEvent(String arguments) throws HunnieException {
+    private static String[] parseEvent(String arguments) throws HunnieException {
         String[] parts = arguments.split(" /from | /to ");
         if (parts.length != 3) {
             throw new HunnieException("Invalid event format! Use: event <description> /from <date> /to <date>");

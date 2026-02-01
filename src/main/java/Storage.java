@@ -85,32 +85,35 @@ public class Storage {
         String description = parts[2].trim();
 
         Task task = null;
+        try {
+            switch (taskType) {
+            case "T":
+                if (parts.length == 3) {
+                    task = new ToDo(description);
+                }
+                break;
+            case "D":
+                if (parts.length == 4) {
+                    String by = parts[3].trim();
+                    task = new Deadline(description, by);
+                }
+                break;
+            case "E":
+                if (parts.length == 5) {
+                    String from = parts[3].trim();
+                    String to = parts[4].trim();
+                    task = new Event(description, from, to);
+                }
+                break;
+            }
 
-        switch (taskType) {
-        case "T":
-            if (parts.length == 3) {
-                task = new ToDo(description);
+            if (task != null && isDone) {
+                task.mark();
             }
-            break;
-        case "D":
-            if (parts.length == 4) {
-                String by = parts[3].trim();
-                task = new Deadline(description, by);
-            }
-            break;
-        case "E":
-            if (parts.length == 5) {
-                String from = parts[3].trim();
-                String to = parts[4].trim();
-                task = new Event(description, from, to);
-            }
-            break;
+        } catch (HunnieException e) {
+            System.out.println("Warning: Skipping invalid task in file: " + e.getMessage());
+            return null;
         }
-
-        if (task != null && isDone) {
-            task.mark();
-        }
-
         return task;
     }
 }
