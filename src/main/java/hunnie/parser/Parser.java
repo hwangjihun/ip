@@ -12,8 +12,19 @@ import hunnie.command.EventCommand;
 import hunnie.command.UnknownCommand;
 import hunnie.exception.HunnieException;
 
+/**
+ * Parses user input and creates the appropriate command objects.
+ */
 public class Parser {
 
+    /**
+     * Parses the full command string and returns the corresponding Command object.
+     * Supported commands include: bye, list, mark, unmark, delete, todo, deadline, and event.
+     *
+     * @param fullCommand Full command string entered by the user.
+     * @return Command object corresponding to the user input.
+     * @throws HunnieException If the command is empty or if required arguments are invalid.
+     */
     public static Command parse(String fullCommand) throws HunnieException {
         if (fullCommand == null || fullCommand.trim().isEmpty()) {
             throw new HunnieException("Empty commands are not allowed!!!");
@@ -47,6 +58,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses the task number from the argument string and converts it to a zero-based index.
+     *
+     * @param arguments String containing the task number.
+     * @return Zero-based index of the task.
+     * @throws HunnieException If the task number format is invalid.
+     */
     private static int parseTaskNumber(String arguments) throws HunnieException {
         try {
             return Integer.parseInt(arguments.trim()) - 1;
@@ -55,6 +73,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses the deadline command arguments to extract description and due date.
+     *
+     * @param arguments String containing the deadline description and due date.
+     * @return Array containing the description at index 0 and due date at index 1.
+     * @throws HunnieException If the deadline format is invalid.
+     */
     private static String[] parseDeadline(String arguments) throws HunnieException {
         String[] parts = arguments.split(" /by ");
         if (parts.length != 2) {
@@ -63,6 +88,13 @@ public class Parser {
         return parts;
     }
 
+    /**
+     * Parses the event command arguments to extract description, start date, and end date.
+     *
+     * @param arguments String containing the event description, start date, and end date.
+     * @return Array containing the description at index 0, start date at index 1, and end date at index 2.
+     * @throws HunnieException If the event format is invalid.
+     */
     private static String[] parseEvent(String arguments) throws HunnieException {
         String[] parts = arguments.split(" /from | /to ");
         if (parts.length != 3) {

@@ -7,11 +7,21 @@ import hunnie.storage.Storage;
 import hunnie.task.TaskList;
 import hunnie.ui.Ui;
 
+/**
+ * Represents the main class of the Hunnie application.
+ * Hunnie is a task management chatbot that helps users track their todos, deadlines, and events.
+ */
 public class Hunnie {
     private final Storage storage;
     private TaskList tasks;
     private final Ui ui;
 
+    /**
+     * Creates a new Hunnie instance with the specified file path for data storage.
+     * Attempts to load existing tasks from the file, or starts with an empty task list if loading fails.
+     *
+     * @param filePath Path to the file where tasks are stored.
+     */
     public Hunnie(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -23,7 +33,11 @@ public class Hunnie {
         }
     }
 
-
+    /**
+     * Runs the main loop of the Hunnie application.
+     * Continuously reads user commands, parses them, executes them, and displays results
+     * until an exit command is received.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
@@ -42,6 +56,11 @@ public class Hunnie {
         }
     }
 
+    /**
+     * Starts the Hunnie application.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         new Hunnie("src/main/data/hunnie.txt").run();
     }

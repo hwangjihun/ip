@@ -13,19 +13,38 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Handles the loading and saving of tasks to a file.
+ * Tasks are stored in a human-readable format with one task per line.
+ */
 public class Storage {
     private static final String PATH = "src/main/data/hunnie.txt";
     private static final DateTimeFormatter STORAGE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final String filePath;
 
+    /**
+     * Creates a new Storage instance with the default file path.
+     */
     public Storage() {
         this.filePath = PATH;
     }
 
+    /**
+     * Creates a new Storage instance with the specified file path.
+     *
+     * @param filePath Path to the file where tasks will be stored.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the storage file.
+     * Creates the parent directory and file if they do not exist.
+     *
+     * @return List of tasks loaded from the file.
+     * @throws HunnieException If an error occurs during file operations.
+     */
     public ArrayList<Task> load() throws HunnieException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(this.filePath);
@@ -56,6 +75,13 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves the list of tasks to the storage file.
+     * Each task is encoded as a single line in the file.
+     *
+     * @param tasks List of tasks to save.
+     * @throws IOException If an error occurs during file writing.
+     */
     public void save(ArrayList<Task> tasks) throws IOException {
         File file = new File(this.filePath);
         FileWriter writer = new FileWriter(file);
@@ -65,6 +91,13 @@ public class Storage {
         writer.close();
     }
 
+    /**
+     * Encodes a task into a string format suitable for storage.
+     * Format: <type> | <isDone> | <description> | [additional fields]
+     *
+     * @param task Task to encode.
+     * @return String representation of the task for storage.
+     */
     private String encodeTask(Task task) {
         String isDone = task.getIsDone() ? "1" : "0";
 
@@ -81,6 +114,13 @@ public class Storage {
 
         return "";
     }
+
+    /**
+     * Parses a line from the storage file and creates the corresponding Task object.
+     *
+     * @param line Line from the storage file.
+     * @return Task object parsed from the line, or null if the line is invalid.
+     */
     private Task parseTask(String line) {
         String[] parts = line.split(" \\| ");
 
