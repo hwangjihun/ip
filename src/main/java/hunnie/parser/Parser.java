@@ -10,6 +10,7 @@ import hunnie.command.ToDoCommand;
 import hunnie.command.DeadlineCommand;
 import hunnie.command.EventCommand;
 import hunnie.command.UnknownCommand;
+import hunnie.command.FindCommand;
 import hunnie.exception.HunnieException;
 
 /**
@@ -53,6 +54,8 @@ public class Parser {
         case "event":
             String[] eventParts = parseEvent(args);
             return new EventCommand(eventParts[0].trim(), eventParts[1].trim(), eventParts[2].trim());
+        case "find":
+            return new FindCommand(parseFindKeyword(args));
         default:
             return new UnknownCommand();
         }
@@ -101,5 +104,19 @@ public class Parser {
             throw new HunnieException("Invalid event format! Use: event <description> /from <date> /to <date>");
         }
         return parts;
+    }
+
+    /**
+     * Parses and validates the keyword for the find command.
+     *
+     * @param arguments String containing the keyword to search for.
+     * @return Trimmed keyword string.
+     * @throws HunnieException If the keyword is empty.
+     */
+    private static String parseFindKeyword(String arguments) throws HunnieException {
+        if (arguments.trim().isEmpty()) {
+            throw new HunnieException("Please provide a keyword to search for!");
+        }
+        return arguments.trim();
     }
 }
