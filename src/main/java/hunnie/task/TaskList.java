@@ -1,8 +1,8 @@
 package hunnie.task;
 
-import hunnie.exception.HunnieException;
-
 import java.util.ArrayList;
+
+import hunnie.exception.HunnieException;
 
 /**
  * Represents a list of tasks and provides operations to manage them.

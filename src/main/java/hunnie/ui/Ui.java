@@ -1,10 +1,10 @@
 package hunnie.ui;
 
+import java.util.Scanner;
+
 import hunnie.exception.HunnieException;
 import hunnie.task.Task;
 import hunnie.task.TaskList;
-
-import java.util.Scanner;
 
 /**
  * Handles user interface operations including reading user input and displaying messages.

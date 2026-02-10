@@ -1,21 +1,20 @@
 package hunnie.task;
 
-import hunnie.exception.HunnieException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import hunnie.exception.HunnieException;
 
 /**
  * Represents an event task with a description, start date, and end date.
  */
 public class Event extends Task {
 
-    protected LocalDate from;
-    protected LocalDate to;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
-
+    protected LocalDate from;
+    protected LocalDate to;
     /**
      * Creates a new event task with the specified description, start date, and end date.
      *
@@ -24,7 +23,7 @@ public class Event extends Task {
      * @param to End date in yyyy-MM-dd format.
      * @throws HunnieException If either date format is invalid.
      */
-    public Event(String description, String from, String to) throws HunnieException{
+    public Event(String description, String from, String to) throws HunnieException {
         super(description);
         this.from = parseDate(from);
         this.to = parseDate(to);

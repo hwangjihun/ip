@@ -1,19 +1,19 @@
 package hunnie.task;
 
-import hunnie.exception.HunnieException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import hunnie.exception.HunnieException;
 
 /**
  * Represents a deadline task with a description and a due date.
  */
 public class Deadline extends Task {
 
-    protected LocalDate by;
     private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    protected LocalDate by;
 
     /**
      * Creates a new deadline task with the specified description and due date.

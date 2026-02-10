@@ -1,11 +1,11 @@
 package hunnie.command;
 
+import java.io.IOException;
+
 import hunnie.exception.HunnieException;
 import hunnie.storage.Storage;
 import hunnie.task.TaskList;
 import hunnie.ui.Ui;
-
-import java.io.IOException;
 
 /**
  * Represents a command to mark a task as done.

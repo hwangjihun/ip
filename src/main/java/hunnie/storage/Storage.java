@@ -1,17 +1,17 @@
 package hunnie.storage;
 
-import hunnie.exception.HunnieException;
-import hunnie.task.Deadline;
-import hunnie.task.Event;
-import hunnie.task.Task;
-import hunnie.task.ToDo;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import hunnie.exception.HunnieException;
+import hunnie.task.Deadline;
+import hunnie.task.Event;
+import hunnie.task.Task;
+import hunnie.task.ToDo;
 
 /**
  * Handles the loading and saving of tasks to a file.
@@ -32,7 +32,7 @@ public class Storage {
     /**
      * Creates a new Storage instance with the specified file path.
      *
-     * @param filePath Path to the file where tasks will be stored.
+     * @param filePath The path to the file where tasks will be stored.
      */
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -93,7 +93,7 @@ public class Storage {
 
     /**
      * Encodes a task into a string format suitable for storage.
-     * Format: <type> | <isDone> | <description> | [additional fields]
+     * Format: {@code <type> | <isDone> | <description> | [additional fields]}
      *
      * @param task Task to encode.
      * @return String representation of the task for storage.
@@ -152,6 +152,8 @@ public class Storage {
                     String to = parts[4].trim();
                     task = new Event(description, from, to);
                 }
+                break;
+            default:
                 break;
             }
 

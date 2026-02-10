@@ -1,12 +1,13 @@
 package hunnie.command;
 
+import java.io.IOException;
+
 import hunnie.exception.HunnieException;
 import hunnie.storage.Storage;
+import hunnie.task.Event;
+import hunnie.task.Task;
 import hunnie.task.TaskList;
 import hunnie.ui.Ui;
-import hunnie.task.Task;
-import hunnie.task.Event;
-import java.io.IOException;
 
 /**
  * Represents a command to add an event task to the task list.
