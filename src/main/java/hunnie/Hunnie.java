@@ -12,9 +12,11 @@ import hunnie.ui.Ui;
  * Hunnie is a task management chatbot that helps users track their todos, deadlines, and events.
  */
 public class Hunnie {
+    private static final String DEFAULT_FILE_PATH = "src/main/data/hunnie.txt";
     private final Storage storage;
     private TaskList tasks;
     private final Ui ui;
+    private boolean isExit;
 
     /**
      * Creates a new Hunnie instance with the specified file path for data storage.
@@ -23,7 +25,18 @@ public class Hunnie {
      * @param filePath Path to the file where tasks are stored.
      */
     public Hunnie(String filePath) {
-        ui = new Ui();
+        this(filePath, false);
+    }
+
+    /**
+     * Creates a new Hunnie instance with the specified file path for data storage.
+     * Allows suppressing console output for GUI usage.
+     *
+     * @param filePath Path to the file where tasks are stored.
+     * @param isGui Whether this instance is used by a GUI.
+     */
+    public Hunnie(String filePath, boolean isGui) {
+        ui = new Ui(isGui);
         storage = new Storage(filePath);
         try {
             tasks = new TaskList(storage.load());
@@ -31,6 +44,13 @@ public class Hunnie {
             ui.showLoadingError();
             tasks = new TaskList();
         }
+    }
+
+    /**
+     * Creates a new Hunnie instance with the default file path for data storage.
+     */
+    public Hunnie() {
+        this(DEFAULT_FILE_PATH, false);
     }
 
     /**
@@ -62,6 +82,45 @@ public class Hunnie {
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {
-        new Hunnie("src/main/data/hunnie.txt").run();
+        new Hunnie(DEFAULT_FILE_PATH, false).run();
+    }
+
+    /**
+     * Returns the welcome message for display in the GUI.
+     *
+     * @return Welcome message.
+     */
+    public String getWelcomeMessage() {
+        ui.clearOutput();
+        ui.showWelcome();
+        return ui.getOutput();
+    }
+
+    /**
+     * Handles user input and returns the chatbot's response.
+     *
+     * @param input User input string.
+     * @return Response string to display.
+     */
+    public String getResponse(String input) {
+        ui.clearOutput();
+        isExit = false;
+        try {
+            Command command = Parser.parse(input);
+            command.execute(this.tasks, this.ui, this.storage);
+            isExit = command.isExit();
+        } catch (HunnieException e) {
+            ui.showError(e.getMessage());
+        }
+        return ui.getOutput();
+    }
+
+    /**
+     * Indicates whether the last command was an exit command.
+     *
+     * @return true if the last command was an exit command.
+     */
+    public boolean isExit() {
+        return isExit;
     }
 }

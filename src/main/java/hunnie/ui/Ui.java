@@ -13,12 +13,41 @@ public class Ui {
     private static final String LINES = "____________________________________________________________";
     private static final String BOTNAME = "Hunnie";
     private final Scanner scanner;
+    private final StringBuilder output;
+    private final boolean isGui;
 
     /**
      * Creates a new UI instance with a scanner for reading user input.
      */
     public Ui() {
+        this(false);
+    }
+
+    /**
+     * Creates a new UI instance.
+     *
+     * @param isGui Whether this UI is used by the GUI (suppresses console output).
+     */
+    public Ui(boolean isGui) {
         this.scanner = new Scanner(System.in);
+        this.output = new StringBuilder();
+        this.isGui = isGui;
+    }
+
+    /**
+     * Clears the buffered output.
+     */
+    public void clearOutput() {
+        output.setLength(0);
+    }
+
+    /**
+     * Returns the buffered output as a string.
+     *
+     * @return Buffered output.
+     */
+    public String getOutput() {
+        return output.toString();
     }
 
     /**
@@ -30,29 +59,36 @@ public class Ui {
         return scanner.nextLine();
     }
 
+    private void appendLine(String message) {
+        output.append(message).append(System.lineSeparator());
+        if (!isGui) {
+            System.out.println(message);
+        }
+    }
+
     /**
      * Displays the welcome message when the application starts.
      */
     public void showWelcome() {
-        System.out.println(LINES);
-        System.out.println("Hello! I'm " + BOTNAME);
-        System.out.println("What can I do for you?");
-        System.out.println(LINES);
+        appendLine(LINES);
+        appendLine("Hello! I'm " + BOTNAME);
+        appendLine("What can I do for you?");
+        appendLine(LINES);
     }
 
     /**
      * Displays the goodbye message when the application exits.
      */
     public void showGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(LINES);
+        appendLine("Bye. Hope to see you again soon!");
+        appendLine(LINES);
     }
 
     /**
      * Displays a horizontal line separator.
      */
     public void showLine() {
-        System.out.println(LINES);
+        appendLine(LINES);
     }
 
     /**
@@ -65,9 +101,9 @@ public class Ui {
         if (tasks.size() == 0) {
             throw new HunnieException("No tasks found!");
         }
-        System.out.println("Here are the tasks in your list:");
+        appendLine("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i));
+            appendLine((i + 1) + "." + tasks.get(i));
         }
     }
 
@@ -77,8 +113,8 @@ public class Ui {
      * @param task Task that was marked as done.
      */
     public void showTaskMarked(Task task) {
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(task);
+        appendLine("Nice! I've marked this task as done:");
+        appendLine(task.toString());
     }
 
     /**
@@ -87,8 +123,8 @@ public class Ui {
      * @param task Task that was marked as not done.
      */
     public void showTaskUnmarked(Task task) {
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(task);
+        appendLine("OK, I've marked this task as not done yet:");
+        appendLine(task.toString());
     }
 
     /**
@@ -98,9 +134,9 @@ public class Ui {
      * @param taskCount Current number of tasks in the list.
      */
     public void showTaskAdded(Task task, int taskCount) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + taskCount + " task(s) in the list.");
+        appendLine("Got it. I've added this task:");
+        appendLine(task.toString());
+        appendLine("Now you have " + taskCount + " task(s) in the list.");
     }
 
     /**
@@ -110,9 +146,9 @@ public class Ui {
      * @param taskCount Current number of tasks in the list.
      */
     public void showTaskDeleted(Task task, int taskCount) {
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + taskCount + " task(s) in the list.");
+        appendLine("Noted. I've removed this task:");
+        appendLine(task.toString());
+        appendLine("Now you have " + taskCount + " task(s) in the list.");
     }
 
     /**
@@ -121,14 +157,14 @@ public class Ui {
      * @param message Error message to display.
      */
     public void showError(String message) {
-        System.out.println(message);
+        appendLine(message);
     }
 
     /**
      * Displays a warning message when tasks cannot be loaded from the file.
      */
     public void showLoadingError() {
-        System.out.println("Warning: Could not load tasks from file. Starting with empty task list.");
+        appendLine("Warning: Could not load tasks from file. Starting with empty task list.");
     }
 
     /**
@@ -137,6 +173,6 @@ public class Ui {
      * @param message Specific error message from the IOException.
      */
     public void showSaveError(String message) {
-        System.out.println("Warning: Could not save tasks to file: " + message);
+        appendLine("Warning: Could not save tasks to file: " + message);
     }
 }

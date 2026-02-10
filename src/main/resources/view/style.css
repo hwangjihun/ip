@@ -1,0 +1,46 @@
+.main-root {
+    -fx-background-color: #f7f7f7;
+    -fx-background-image: url("/images/background.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.dialog-container {
+    -fx-padding: 10 5 10 5;
+}
+
+.dialog-text {
+    -fx-background-radius: 10;
+    -fx-padding: 6 10 6 10;
+    -fx-font-size: 13px;
+    -fx-wrap-text: true;
+}
+
+.user-dialog {
+    -fx-background-color: #d6ecff;
+}
+
+.bot-dialog {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e1e1e1;
+    -fx-border-radius: 10;
+}
+
+.user-input {
+    -fx-background-radius: 6;
+    -fx-padding: 6 10 6 10;
+}
+
+.send-button {
+    -fx-background-color: #4a7bd0;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+}
