@@ -23,6 +23,7 @@ public class TaskList {
      * @param tasks Initial list of tasks.
      */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "Task list should not be initialized with null storage";
         this.tasks = tasks;
     }
 
@@ -32,6 +33,7 @@ public class TaskList {
      * @param task Task to add.
      */
     public void add(Task task) {
+        assert task != null : "Added task should not be null";
         tasks.add(task);
     }
 
@@ -59,7 +61,9 @@ public class TaskList {
         if (index < 0 || index >= tasks.size()) {
             throw new HunnieException("Invalid task number! You only have " + tasks.size() + " task(s).");
         }
-        return tasks.get(index);
+        Task task = tasks.get(index);
+        assert task != null : "Stored tasks should not contain null entries";
+        return task;
     }
 
     /**
@@ -103,8 +107,10 @@ public class TaskList {
     }
 
     public TaskList getFilteredTasks(String keyword) {
+        assert keyword != null : "Filter keyword should not be null";
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : this.tasks) {
+            assert task != null : "Stored tasks should not contain null entries";
             if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
                 matchingTasks.add(task);
             }

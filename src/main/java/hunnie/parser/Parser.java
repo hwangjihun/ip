@@ -69,6 +69,7 @@ public class Parser {
      * @throws HunnieException If the task number format is invalid.
      */
     private static int parseTaskNumber(String arguments) throws HunnieException {
+        assert arguments != null : "Task-number arguments should not be null";
         try {
             return Integer.parseInt(arguments.trim()) - 1;
         } catch (NumberFormatException e) {
@@ -84,6 +85,7 @@ public class Parser {
      * @throws HunnieException If the deadline format is invalid.
      */
     private static String[] parseDeadline(String arguments) throws HunnieException {
+        assert arguments != null : "Deadline arguments should not be null";
         String[] parts = arguments.split(" /by ");
         if (parts.length != 2) {
             throw new HunnieException("Invalid deadline format! Use: deadline <description> /by <date>");
@@ -99,6 +101,7 @@ public class Parser {
      * @throws HunnieException If the event format is invalid.
      */
     private static String[] parseEvent(String arguments) throws HunnieException {
+        assert arguments != null : "Event arguments should not be null";
         String[] parts = arguments.split(" /from | /to ");
         if (parts.length != 3) {
             throw new HunnieException("Invalid event format! Use: event <description> /from <date> /to <date>");
@@ -114,6 +117,7 @@ public class Parser {
      * @throws HunnieException If the keyword is empty.
      */
     private static String parseFindKeyword(String arguments) throws HunnieException {
+        assert arguments != null : "Find arguments should not be null";
         if (arguments.trim().isEmpty()) {
             throw new HunnieException("Please provide a keyword to search for!");
         }
