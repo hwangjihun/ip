@@ -17,9 +17,9 @@ public class ToDoTest {
     }
 
     @Test
-    public void getIsDone_newTask_returnsFalse() {
+    public void isDone_newTask_returnsFalse() {
         ToDo todo = new ToDo("enjoy life");
-        assertFalse(todo.getIsDone());
+        assertFalse(todo.isDone());
     }
 
     @Test
@@ -39,15 +39,15 @@ public class ToDoTest {
     public void mark_task_setsIsDoneTrue() {
         ToDo todo = new ToDo("finish homework");
         todo.mark();
-        assertTrue(todo.getIsDone());
+        assertTrue(todo.isDone());
     }
 
     @Test
-    public void unMark_markedTask_setsIsDoneFalse() {
+    public void unmark_markedTask_setsIsDoneFalse() {
         ToDo todo = new ToDo("clean room");
         todo.mark();
-        todo.unMark();
-        assertFalse(todo.getIsDone());
+        todo.unmark();
+        assertFalse(todo.isDone());
     }
 
     @Test
@@ -67,16 +67,16 @@ public class ToDoTest {
     public void mark_multipleSequence_correctState() {
         ToDo todo = new ToDo("task");
 
-        assertFalse(todo.getIsDone());
+        assertFalse(todo.isDone());
 
         todo.mark();
-        assertTrue(todo.getIsDone());
+        assertTrue(todo.isDone());
 
-        todo.unMark();
-        assertFalse(todo.getIsDone());
+        todo.unmark();
+        assertFalse(todo.isDone());
 
         todo.mark();
-        assertTrue(todo.getIsDone());
+        assertTrue(todo.isDone());
     }
 
     @Test

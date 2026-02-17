@@ -1,7 +1,5 @@
 package hunnie.command;
 
-import java.io.IOException;
-
 import hunnie.exception.HunnieException;
 import hunnie.storage.Storage;
 import hunnie.task.Event;
@@ -51,10 +49,6 @@ public class EventCommand extends Command {
         Task newTask = new Event(this.description, this.from, this.to);
         tasks.add(newTask);
         ui.showTaskAdded(newTask, tasks.size());
-        try {
-            storage.save(tasks.getAllTasks());
-        } catch (IOException e) {
-            ui.showSaveError(e.getMessage());
-        }
+        saveTasks(tasks, storage, ui);
     }
 }

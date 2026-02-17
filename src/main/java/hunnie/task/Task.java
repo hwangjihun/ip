@@ -39,15 +39,6 @@ public class Task {
     }
 
     /**
-     * Returns whether this task is marked as done.
-     *
-     * @return True if the task is done, false otherwise.
-     */
-    public boolean getIsDone() {
-        return isDone();
-    }
-
-    /**
      * Returns the status icon for this task.
      *
      * @return "X" if the task is done, " " otherwise.
@@ -68,13 +59,6 @@ public class Task {
      */
     public void unmark() {
         isDone = false;
-    }
-
-    /**
-     * Marks this task as not done.
-     */
-    public void unMark() {
-        unmark();
     }
 
     @Override

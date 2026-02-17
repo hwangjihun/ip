@@ -1,5 +1,7 @@
 package hunnie.command;
 
+import java.io.IOException;
+
 import hunnie.exception.HunnieException;
 import hunnie.storage.Storage;
 import hunnie.task.TaskList;
@@ -20,6 +22,14 @@ public abstract class Command {
      * @throws HunnieException If an error occurs during command execution.
      */
     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws HunnieException;
+
+    protected final void saveTasks(TaskList tasks, Storage storage, Ui ui) {
+        try {
+            storage.save(tasks.getAllTasks());
+        } catch (IOException e) {
+            ui.showSaveError(e.getMessage());
+        }
+    }
 
     /**
      * Returns whether this command should cause the application to exit.

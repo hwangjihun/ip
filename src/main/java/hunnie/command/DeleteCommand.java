@@ -1,7 +1,5 @@
 package hunnie.command;
 
-import java.io.IOException;
-
 import hunnie.exception.HunnieException;
 import hunnie.storage.Storage;
 import hunnie.task.Task;
@@ -37,10 +35,6 @@ public class DeleteCommand extends Command {
         Task taskToDelete = tasks.get(this.taskIdx);
         tasks.delete(this.taskIdx);
         ui.showTaskDeleted(taskToDelete, tasks.size());
-        try {
-            storage.save(tasks.getAllTasks());
-        } catch (IOException e) {
-            ui.showSaveError(e.getMessage());
-        }
+        saveTasks(tasks, storage, ui);
     }
 }

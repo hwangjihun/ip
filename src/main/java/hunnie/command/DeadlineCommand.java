@@ -1,7 +1,5 @@
 package hunnie.command;
 
-import java.io.IOException;
-
 import hunnie.exception.HunnieException;
 import hunnie.storage.Storage;
 import hunnie.task.Deadline;
@@ -47,10 +45,6 @@ public class DeadlineCommand extends Command {
         Task newTask = new Deadline(description, by);
         tasks.add(newTask);
         ui.showTaskAdded(newTask, tasks.size());
-        try {
-            storage.save(tasks.getAllTasks());
-        } catch (IOException e) {
-            ui.showSaveError(e.getMessage());
-        }
+        saveTasks(tasks, storage, ui);
     }
 }

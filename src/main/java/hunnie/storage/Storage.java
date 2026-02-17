@@ -123,7 +123,8 @@ public class Storage {
             return TASK_TYPE_EVENT + FIELD_SEPARATOR + doneFlag + FIELD_SEPARATOR + event.getDescription()
                     + FIELD_SEPARATOR + from + FIELD_SEPARATOR + to;
         }
-        throw new IllegalArgumentException("Unsupported task type encountered during storage encoding: " + task.getClass().getName());
+        throw new IllegalArgumentException(
+                "Unsupported task type encountered during storage encoding: " + task.getClass().getName());
     }
 
     /**

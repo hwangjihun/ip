@@ -1,7 +1,5 @@
 package hunnie.command;
 
-import java.io.IOException;
-
 import hunnie.exception.HunnieException;
 import hunnie.storage.Storage;
 import hunnie.task.TaskList;
@@ -35,10 +33,6 @@ public class MarkCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) throws HunnieException {
         tasks.mark(this.taskIdx);
         ui.showTaskMarked(tasks.get(this.taskIdx));
-        try {
-            storage.save(tasks.getAllTasks());
-        } catch (IOException e) {
-            ui.showSaveError(e.getMessage());
-        }
+        saveTasks(tasks, storage, ui);
     }
 }

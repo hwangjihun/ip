@@ -103,11 +103,6 @@ public class Parser {
         if (!hasExactlyOneBySeparator) {
             throw new HunnieException(INVALID_DEADLINE_FORMAT_MESSAGE);
         }
-        String[] parts = arguments.split(" /by ");
-        if (parts.length != 2) {
-            throw new HunnieException("Invalid deadline format! Use: deadline <description> /by <date>");
-        }
-
         String description = arguments.substring(0, byIndex);
         String by = arguments.substring(byIndex + DEADLINE_SEPARATOR.length());
         return new String[] {description, by};
