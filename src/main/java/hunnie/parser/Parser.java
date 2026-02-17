@@ -81,6 +81,7 @@ public class Parser {
      * @throws HunnieException If the task number format is invalid.
      */
     private static int parseTaskNumber(String arguments) throws HunnieException {
+        assert arguments != null : "Task-number arguments should not be null";
         try {
             return Integer.parseInt(arguments.trim()) - USER_TASK_NUMBER_OFFSET;
         } catch (NumberFormatException e) {
@@ -96,10 +97,15 @@ public class Parser {
      * @throws HunnieException If the deadline format is invalid.
      */
     private static String[] parseDeadline(String arguments) throws HunnieException {
+        assert arguments != null : "Deadline arguments should not be null";
         int byIndex = arguments.indexOf(DEADLINE_SEPARATOR);
         boolean hasExactlyOneBySeparator = byIndex != -1 && byIndex == arguments.lastIndexOf(DEADLINE_SEPARATOR);
         if (!hasExactlyOneBySeparator) {
             throw new HunnieException(INVALID_DEADLINE_FORMAT_MESSAGE);
+        }
+        String[] parts = arguments.split(" /by ");
+        if (parts.length != 2) {
+            throw new HunnieException("Invalid deadline format! Use: deadline <description> /by <date>");
         }
 
         String description = arguments.substring(0, byIndex);
@@ -115,6 +121,7 @@ public class Parser {
      * @throws HunnieException If the event format is invalid.
      */
     private static String[] parseEvent(String arguments) throws HunnieException {
+        assert arguments != null : "Event arguments should not be null";
         String[] parts = arguments.split(" /from | /to ");
         if (parts.length != 3) {
             throw new HunnieException(INVALID_EVENT_FORMAT_MESSAGE);
@@ -130,6 +137,7 @@ public class Parser {
      * @throws HunnieException If the keyword is empty.
      */
     private static String parseFindKeyword(String arguments) throws HunnieException {
+        assert arguments != null : "Find arguments should not be null";
         if (arguments.trim().isEmpty()) {
             throw new HunnieException(EMPTY_FIND_KEYWORD_MESSAGE);
         }

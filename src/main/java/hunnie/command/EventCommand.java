@@ -42,6 +42,9 @@ public class EventCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws HunnieException {
+        assert this.description != null : "Event description should not be null";
+        assert this.from != null : "Event start date string should not be null";
+        assert this.to != null : "Event end date string should not be null";
         if (this.description.trim().isEmpty()) {
             throw new HunnieException("Hey, the description of an event task should not be empty!");
         }

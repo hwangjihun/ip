@@ -36,6 +36,7 @@ public class Hunnie {
      * @param isGui Whether this instance is used by a GUI.
      */
     public Hunnie(String filePath, boolean isGui) {
+        assert filePath != null : "Storage file path should not be null";
         ui = new Ui(isGui);
         storage = new Storage(filePath);
         try {

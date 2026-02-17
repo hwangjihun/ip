@@ -37,6 +37,7 @@ public class Event extends Task {
      * @throws HunnieException If the date format is invalid.
      */
     private LocalDate parseDate(String dateStr) throws HunnieException {
+        assert dateStr != null : "Date input should not be null";
         try {
             return LocalDate.parse(dateStr, INPUT_FORMAT);
         } catch (DateTimeParseException e) {

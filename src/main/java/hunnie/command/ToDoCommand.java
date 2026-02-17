@@ -36,6 +36,7 @@ public class ToDoCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws HunnieException {
+        assert this.description != null : "Todo description should not be null";
         if (this.description.trim().isEmpty()) {
             throw new HunnieException("Hey, the description of a todo task should not be empty!");
         }
