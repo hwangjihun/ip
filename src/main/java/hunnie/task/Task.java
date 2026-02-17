@@ -5,8 +5,8 @@ package hunnie.task;
  * This is the base class for all task types in the Hunnie application.
  */
 public class Task {
-    protected String description;
-    protected boolean isDone;
+    private final String description;
+    private boolean isDone;
 
     /**
      * Creates a new task with the specified description.
@@ -34,8 +34,17 @@ public class Task {
      *
      * @return True if the task is done, false otherwise.
      */
-    public boolean getIsDone() {
+    public boolean isDone() {
         return isDone;
+    }
+
+    /**
+     * Returns whether this task is marked as done.
+     *
+     * @return True if the task is done, false otherwise.
+     */
+    public boolean getIsDone() {
+        return isDone();
     }
 
     /**
@@ -57,12 +66,19 @@ public class Task {
     /**
      * Marks this task as not done.
      */
-    public void unMark() {
+    public void unmark() {
         isDone = false;
+    }
+
+    /**
+     * Marks this task as not done.
+     */
+    public void unMark() {
+        unmark();
     }
 
     @Override
     public String toString() {
-        return "[" + this.getStatusIcon() + "] " + this.description;
+        return "[" + getStatusIcon() + "] " + description;
     }
 }

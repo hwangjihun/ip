@@ -8,7 +8,7 @@ import hunnie.exception.HunnieException;
  * Represents a list of tasks and provides operations to manage them.
  */
 public class TaskList {
-    private ArrayList<Task> tasks;
+    private final ArrayList<Task> tasks;
 
     /**
      * Creates a new empty task list.
@@ -44,9 +44,7 @@ public class TaskList {
      * @throws HunnieException If the index is invalid.
      */
     public void delete(int index) throws HunnieException {
-        if (index < 0 || index >= tasks.size()) {
-            throw new HunnieException("Invalid task number! You only have " + tasks.size() + " task(s).");
-        }
+        validateTaskIndex(index);
         tasks.remove(index);
     }
 
@@ -58,12 +56,8 @@ public class TaskList {
      * @throws HunnieException If the index is invalid.
      */
     public Task get(int index) throws HunnieException {
-        if (index < 0 || index >= tasks.size()) {
-            throw new HunnieException("Invalid task number! You only have " + tasks.size() + " task(s).");
-        }
-        Task task = tasks.get(index);
-        assert task != null : "Stored tasks should not contain null entries";
-        return task;
+        validateTaskIndex(index);
+        return tasks.get(index);
     }
 
     /**
@@ -85,7 +79,7 @@ public class TaskList {
      */
     public void unmark(int index) throws HunnieException {
         Task task = get(index);
-        task.unMark();
+        task.unmark();
     }
 
     /**
@@ -108,13 +102,20 @@ public class TaskList {
 
     public TaskList getFilteredTasks(String keyword) {
         assert keyword != null : "Filter keyword should not be null";
+        String normalizedKeyword = keyword.toLowerCase();
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : this.tasks) {
             assert task != null : "Stored tasks should not contain null entries";
-            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+            if (task.getDescription().toLowerCase().contains(normalizedKeyword)) {
                 matchingTasks.add(task);
             }
         }
         return new TaskList(matchingTasks);
+    }
+
+    private void validateTaskIndex(int index) throws HunnieException {
+        if (index < 0 || index >= tasks.size()) {
+            throw new HunnieException("Invalid task number! You only have " + tasks.size() + " task(s).");
+        }
     }
 }
