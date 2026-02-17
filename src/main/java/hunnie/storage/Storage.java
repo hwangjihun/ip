@@ -109,8 +109,6 @@ public class Storage {
     private String encodeTask(Task task) {
         assert task != null : "Task to encode should not be null";
         String doneFlag = task.isDone() ? DONE_FLAG : NOT_DONE_FLAG;
-        String isDone = task.getIsDone() ? "1" : "0";
-
         if (task instanceof ToDo todo) {
             return TASK_TYPE_TODO + FIELD_SEPARATOR + doneFlag + FIELD_SEPARATOR + todo.getDescription();
         }
@@ -125,9 +123,7 @@ public class Storage {
             return TASK_TYPE_EVENT + FIELD_SEPARATOR + doneFlag + FIELD_SEPARATOR + event.getDescription()
                     + FIELD_SEPARATOR + from + FIELD_SEPARATOR + to;
         }
-
-        assert false : "Unsupported task type encountered during storage encoding: " + task.getClass().getName();
-        return "";
+        throw new IllegalArgumentException("Unsupported task type encountered during storage encoding: " + task.getClass().getName());
     }
 
     /**
