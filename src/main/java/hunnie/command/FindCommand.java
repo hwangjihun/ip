@@ -30,6 +30,7 @@ public class FindCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws HunnieException {
+        assert this.keyword != null : "Find keyword should not be null";
         TaskList matchingTasks = tasks.getFilteredTasks(this.keyword);
         ui.showTaskList(matchingTasks);
     }

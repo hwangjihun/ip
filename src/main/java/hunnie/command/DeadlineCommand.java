@@ -39,6 +39,8 @@ public class DeadlineCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws HunnieException {
+        assert this.description != null : "Deadline description should not be null";
+        assert this.by != null : "Deadline date string should not be null";
         if (this.description.trim().isEmpty()) {
             throw new HunnieException("Hey, the description of a deadline task should not be empty!");
         }

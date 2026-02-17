@@ -35,6 +35,7 @@ public class Storage {
      * @param filePath The path to the file where tasks will be stored.
      */
     public Storage(String filePath) {
+        assert filePath != null : "Storage file path should not be null";
         this.filePath = filePath;
     }
 
@@ -83,6 +84,7 @@ public class Storage {
      * @throws IOException If an error occurs during file writing.
      */
     public void save(ArrayList<Task> tasks) throws IOException {
+        assert tasks != null : "Task collection to save should not be null";
         File file = new File(this.filePath);
         FileWriter writer = new FileWriter(file);
         for (Task task : tasks) {
@@ -99,6 +101,7 @@ public class Storage {
      * @return String representation of the task for storage.
      */
     private String encodeTask(Task task) {
+        assert task != null : "Task to encode should not be null";
         String isDone = task.getIsDone() ? "1" : "0";
 
         if (task instanceof ToDo todo) {
@@ -112,6 +115,7 @@ public class Storage {
             return "E | " + isDone + " | " + event.getDescription() + " | " + from + " | " + to;
         }
 
+        assert false : "Unsupported task type encountered during storage encoding: " + task.getClass().getName();
         return "";
     }
 
