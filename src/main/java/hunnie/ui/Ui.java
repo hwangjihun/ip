@@ -11,7 +11,7 @@ import hunnie.task.TaskList;
  */
 public class Ui {
     private static final String LINES = "____________________________________________________________";
-    private static final String BOTNAME = "Hunnie";
+    private static final String BOT_NAME = "Hunnie";
     private final Scanner scanner;
     private final StringBuilder output;
     private final boolean isGui;
@@ -71,7 +71,7 @@ public class Ui {
      */
     public void showWelcome() {
         appendLine(LINES);
-        appendLine("Hello! I'm " + BOTNAME);
+        appendLine("Hello! I'm " + BOT_NAME);
         appendLine("What can I do for you?");
         appendLine(LINES);
     }
@@ -98,11 +98,12 @@ public class Ui {
      * @throws HunnieException If the task list is empty.
      */
     public void showTaskList(TaskList tasks) throws HunnieException {
-        if (tasks.size() == 0) {
+        int taskCount = tasks.size();
+        if (taskCount == 0) {
             throw new HunnieException("No tasks found!");
         }
         appendLine("Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
+        for (int i = 0; i < taskCount; i++) {
             appendLine((i + 1) + "." + tasks.get(i));
         }
     }
@@ -113,8 +114,7 @@ public class Ui {
      * @param task Task that was marked as done.
      */
     public void showTaskMarked(Task task) {
-        appendLine("Nice! I've marked this task as done:");
-        appendLine(task.toString());
+        showTaskWithPrefix("Nice! I've marked this task as done:", task);
     }
 
     /**
@@ -123,8 +123,7 @@ public class Ui {
      * @param task Task that was marked as not done.
      */
     public void showTaskUnmarked(Task task) {
-        appendLine("OK, I've marked this task as not done yet:");
-        appendLine(task.toString());
+        showTaskWithPrefix("OK, I've marked this task as not done yet:", task);
     }
 
     /**
@@ -134,9 +133,8 @@ public class Ui {
      * @param taskCount Current number of tasks in the list.
      */
     public void showTaskAdded(Task task, int taskCount) {
-        appendLine("Got it. I've added this task:");
-        appendLine(task.toString());
-        appendLine("Now you have " + taskCount + " task(s) in the list.");
+        showTaskWithPrefix("Got it. I've added this task:", task);
+        showTaskCount(taskCount);
     }
 
     /**
@@ -146,9 +144,8 @@ public class Ui {
      * @param taskCount Current number of tasks in the list.
      */
     public void showTaskDeleted(Task task, int taskCount) {
-        appendLine("Noted. I've removed this task:");
-        appendLine(task.toString());
-        appendLine("Now you have " + taskCount + " task(s) in the list.");
+        showTaskWithPrefix("Noted. I've removed this task:", task);
+        showTaskCount(taskCount);
     }
 
     /**
@@ -174,5 +171,14 @@ public class Ui {
      */
     public void showSaveError(String message) {
         appendLine("Warning: Could not save tasks to file: " + message);
+    }
+
+    private void showTaskWithPrefix(String prefix, Task task) {
+        appendLine(prefix);
+        appendLine(task.toString());
+    }
+
+    private void showTaskCount(int taskCount) {
+        appendLine("Now you have " + taskCount + " task(s) in the list.");
     }
 }

@@ -1,12 +1,11 @@
 package hunnie.gui;
 
+import hunnie.Hunnie;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import hunnie.Hunnie;
 
 /**
  * JavaFX entry point for the Hunnie GUI.

@@ -17,6 +17,18 @@ import hunnie.exception.HunnieException;
  * Parses user input and creates the appropriate command objects.
  */
 public class Parser {
+    private static final int COMMAND_PARTS_LIMIT = 2;
+    private static final String COMMAND_SEPARATOR = " ";
+    private static final String EMPTY_ARGUMENTS = "";
+    private static final int USER_TASK_NUMBER_OFFSET = 1;
+    private static final String DEADLINE_SEPARATOR = " /by ";
+    private static final String EMPTY_COMMAND_MESSAGE = "Empty commands are not allowed!!!";
+    private static final String INVALID_TASK_NUMBER_MESSAGE = "Invalid task number format!";
+    private static final String INVALID_DEADLINE_FORMAT_MESSAGE =
+            "Invalid deadline format! Use: deadline <description> /by <date>";
+    private static final String INVALID_EVENT_FORMAT_MESSAGE =
+            "Invalid event format! Use: event <description> /from <date> /to <date>";
+    private static final String EMPTY_FIND_KEYWORD_MESSAGE = "Please provide a keyword to search for!";
 
     /**
      * Parses the full command string and returns the corresponding Command object.
@@ -28,12 +40,12 @@ public class Parser {
      */
     public static Command parse(String fullCommand) throws HunnieException {
         if (fullCommand == null || fullCommand.trim().isEmpty()) {
-            throw new HunnieException("Empty commands are not allowed!!!");
+            throw new HunnieException(EMPTY_COMMAND_MESSAGE);
         }
 
-        String[] cmdParts = fullCommand.trim().split(" ", 2);
+        String[] cmdParts = fullCommand.trim().split(COMMAND_SEPARATOR, COMMAND_PARTS_LIMIT);
         String cmd = cmdParts[0].toLowerCase();
-        String args = cmdParts.length > 1 ? cmdParts[1] : "";
+        String args = cmdParts.length > 1 ? cmdParts[1] : EMPTY_ARGUMENTS;
 
         switch (cmd) {
         case "bye":
@@ -70,9 +82,9 @@ public class Parser {
      */
     private static int parseTaskNumber(String arguments) throws HunnieException {
         try {
-            return Integer.parseInt(arguments.trim()) - 1;
+            return Integer.parseInt(arguments.trim()) - USER_TASK_NUMBER_OFFSET;
         } catch (NumberFormatException e) {
-            throw new HunnieException("Invalid task number format!");
+            throw new HunnieException(INVALID_TASK_NUMBER_MESSAGE);
         }
     }
 
@@ -84,11 +96,15 @@ public class Parser {
      * @throws HunnieException If the deadline format is invalid.
      */
     private static String[] parseDeadline(String arguments) throws HunnieException {
-        String[] parts = arguments.split(" /by ");
-        if (parts.length != 2) {
-            throw new HunnieException("Invalid deadline format! Use: deadline <description> /by <date>");
+        int byIndex = arguments.indexOf(DEADLINE_SEPARATOR);
+        boolean hasExactlyOneBySeparator = byIndex != -1 && byIndex == arguments.lastIndexOf(DEADLINE_SEPARATOR);
+        if (!hasExactlyOneBySeparator) {
+            throw new HunnieException(INVALID_DEADLINE_FORMAT_MESSAGE);
         }
-        return parts;
+
+        String description = arguments.substring(0, byIndex);
+        String by = arguments.substring(byIndex + DEADLINE_SEPARATOR.length());
+        return new String[] {description, by};
     }
 
     /**
@@ -101,7 +117,7 @@ public class Parser {
     private static String[] parseEvent(String arguments) throws HunnieException {
         String[] parts = arguments.split(" /from | /to ");
         if (parts.length != 3) {
-            throw new HunnieException("Invalid event format! Use: event <description> /from <date> /to <date>");
+            throw new HunnieException(INVALID_EVENT_FORMAT_MESSAGE);
         }
         return parts;
     }
@@ -115,7 +131,7 @@ public class Parser {
      */
     private static String parseFindKeyword(String arguments) throws HunnieException {
         if (arguments.trim().isEmpty()) {
-            throw new HunnieException("Please provide a keyword to search for!");
+            throw new HunnieException(EMPTY_FIND_KEYWORD_MESSAGE);
         }
         return arguments.trim();
     }
