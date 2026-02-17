@@ -1,5 +1,6 @@
 package hunnie.ui;
 
+import java.util.List;
 import java.util.Scanner;
 
 import hunnie.exception.HunnieException;
@@ -80,7 +81,7 @@ public class Ui {
      * Displays the goodbye message when the application exits.
      */
     public void showGoodbye() {
-        appendLine("Bye. Hope to see you again soon!");
+        appendLine("Bye, i hope i helped in some way! Hope to see you again soon ^^");
         appendLine(LINES);
     }
 
@@ -145,6 +146,20 @@ public class Ui {
      */
     public void showTaskDeleted(Task task, int taskCount) {
         showTaskWithPrefix("Noted. I've removed this task:", task);
+        showTaskCount(taskCount);
+    }
+
+    /**
+     * Displays a message indicating that multiple tasks have been deleted from the list.
+     *
+     * @param deletedTasks Tasks that were deleted.
+     * @param taskCount Current number of tasks in the list.
+     */
+    public void showTasksDeleted(List<Task> deletedTasks, int taskCount) {
+        appendLine("Noted. I've removed these tasks:");
+        for (Task deletedTask : deletedTasks) {
+            appendLine(deletedTask.toString());
+        }
         showTaskCount(taskCount);
     }
 

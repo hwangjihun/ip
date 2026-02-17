@@ -1,5 +1,9 @@
 package hunnie.parser;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import hunnie.command.Command;
 import hunnie.command.DeadlineCommand;
 import hunnie.command.DeleteCommand;
@@ -19,6 +23,8 @@ import hunnie.exception.HunnieException;
 public class Parser {
     private static final int COMMAND_PARTS_LIMIT = 2;
     private static final String COMMAND_SEPARATOR = " ";
+    private static final String DELETE_TASK_LIST_SEPARATOR = ", ";
+    private static final String VALID_DELETE_FORMAT_REGEX = "\\d+(, \\d+)*";
     private static final String EMPTY_ARGUMENTS = "";
     private static final int USER_TASK_NUMBER_OFFSET = 1;
     private static final String DEADLINE_SEPARATOR = " /by ";
@@ -28,6 +34,7 @@ public class Parser {
             "Invalid deadline format! Use: deadline <description> /by <date>";
     private static final String INVALID_EVENT_FORMAT_MESSAGE =
             "Invalid event format! Use: event <description> /from <date> /to <date>";
+    private static final String INVALID_DELETE_FORMAT_MESSAGE = "Invalid command format! Use: delete 2, 4, 7";
     private static final String EMPTY_FIND_KEYWORD_MESSAGE = "Please provide a keyword to search for!";
 
     /**
@@ -57,7 +64,7 @@ public class Parser {
         case "unmark":
             return new UnmarkCommand(parseTaskNumber(args));
         case "delete":
-            return new DeleteCommand(parseTaskNumber(args));
+            return new DeleteCommand(parseTaskNumbers(args));
         case "todo":
             return new ToDoCommand(args);
         case "deadline":
@@ -86,6 +93,28 @@ public class Parser {
             return Integer.parseInt(arguments.trim()) - USER_TASK_NUMBER_OFFSET;
         } catch (NumberFormatException e) {
             throw new HunnieException(INVALID_TASK_NUMBER_MESSAGE);
+        }
+    }
+
+    private static ArrayList<Integer> parseTaskNumbers(String arguments) throws HunnieException {
+        String trimmedArguments = arguments.trim();
+        if (trimmedArguments.isEmpty() || !trimmedArguments.matches(VALID_DELETE_FORMAT_REGEX)) {
+            throw new HunnieException(INVALID_DELETE_FORMAT_MESSAGE);
+        }
+
+        String[] tokens = trimmedArguments.split(DELETE_TASK_LIST_SEPARATOR);
+        Set<Integer> uniqueTaskNumbers = new LinkedHashSet<>();
+        for (String token : tokens) {
+            uniqueTaskNumbers.add(parseDeleteTaskNumber(token));
+        }
+        return new ArrayList<>(uniqueTaskNumbers);
+    }
+
+    private static int parseDeleteTaskNumber(String token) throws HunnieException {
+        try {
+            return Integer.parseInt(token) - USER_TASK_NUMBER_OFFSET;
+        } catch (NumberFormatException e) {
+            throw new HunnieException(INVALID_DELETE_FORMAT_MESSAGE);
         }
     }
 
