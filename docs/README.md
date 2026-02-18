@@ -4,7 +4,7 @@ Hunnie is a desktop GUI chatbot for managing tasks.
 You interact with Hunnie by typing commands into the app's input box and
 reading replies in the chat panel.
 
-![Product screenshot](UI.png)
+![Product screenshot](Ui.png)
 
 - [Quick start](#quick-start)
 - [Setting up in IntelliJ](#setting-up-in-intellij)
