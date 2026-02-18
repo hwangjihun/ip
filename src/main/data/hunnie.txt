@@ -1,7 +1,7 @@
-T | 1 | eattt
-D | 1 | homework | 2024-12-31
-E | 1 | meeting | 2024-12-01 | 2024-12-02
-T | 1 | be happy
-T | 0 | eat fooddd
-T | 0 | eattttt
-T | 0 | sleep peacefully
+T | 0 | Finish CS2103 Tutorial 6
+E | 1 | Chinese New Year holiday | 2026-02-17 | 2026-02-18
+D | 0 | CS2102 assignment | 2026-02-20
+T | 1 | Wash dishes and do laundry
+T | 1 | run 14km during valentine's
+T | 0 | Review my homework
+T | 0 | do past year papers
