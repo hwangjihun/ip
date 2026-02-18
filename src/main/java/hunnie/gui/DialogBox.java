@@ -21,6 +21,10 @@ import javafx.scene.shape.Circle;
  */
 public class DialogBox extends HBox {
     private static final double AVATAR_SIZE = 50;
+    private static final String DIALOG_ROW_STYLE_CLASS = "dialog-row";
+    private static final String USER_ROW_STYLE_CLASS = "user-row";
+    private static final String BOT_ROW_STYLE_CLASS = "bot-row";
+    private static final String AVATAR_STYLE_CLASS = "avatar-image";
 
     @FXML
     private Label dialog;
@@ -43,7 +47,9 @@ public class DialogBox extends HBox {
         applyAvatarStyle();
         dialog.setMaxWidth(280);
         dialog.setMinHeight(Region.USE_PREF_SIZE);
+        this.getStyleClass().add(DIALOG_ROW_STYLE_CLASS);
         dialog.getStyleClass().add("dialog-text");
+        displayPicture.getStyleClass().add(AVATAR_STYLE_CLASS);
     }
 
     /**
@@ -52,6 +58,7 @@ public class DialogBox extends HBox {
     public static DialogBox getUserDialog(String text, Image img) {
         DialogBox box = new DialogBox(text, img);
         box.dialog.getStyleClass().add("user-dialog");
+        box.getStyleClass().add(USER_ROW_STYLE_CLASS);
         box.setAlignment(Pos.TOP_RIGHT);
         return box;
     }
@@ -62,6 +69,7 @@ public class DialogBox extends HBox {
     public static DialogBox getHunnieDialog(String text, Image img) {
         DialogBox box = new DialogBox(text, img);
         box.dialog.getStyleClass().add("bot-dialog");
+        box.getStyleClass().add(BOT_ROW_STYLE_CLASS);
         box.flip();
         return box;
     }

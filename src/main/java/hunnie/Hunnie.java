@@ -12,6 +12,7 @@ import hunnie.ui.Ui;
  * Hunnie is a task management chatbot that helps users track their todos, deadlines, and events.
  */
 public class Hunnie {
+    public static final long EXIT_DELAY_MS = 1200L;
     private static final String DEFAULT_FILE_PATH = "src/main/data/hunnie.txt";
     private final Storage storage;
     private TaskList tasks;
@@ -69,6 +70,9 @@ public class Hunnie {
                 Command c = Parser.parse(fullCommand);
                 c.execute(this.tasks, this.ui, this.storage);
                 isExit = c.isExit();
+                if (isExit) {
+                    delayBeforeExit();
+                }
             } catch (HunnieException e) {
                 ui.showError(e.getMessage());
             } finally {
@@ -123,5 +127,14 @@ public class Hunnie {
      */
     public boolean isExit() {
         return isExit;
+    }
+
+    private void delayBeforeExit() {
+        // This exit-delay implementation was written with the help of ChatGPT.
+        try {
+            Thread.sleep(EXIT_DELAY_MS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

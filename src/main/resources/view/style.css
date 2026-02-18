@@ -1,46 +1,128 @@
 .main-root {
-    -fx-background-color: #f7f7f7;
+    -fx-background-color: #0b0f18;
     -fx-background-image: url("/images/background.jpg");
     -fx-background-size: cover;
     -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+    -fx-font-family: "Cinzel", "Georgia", serif;
+}
+
+.ambient-overlay {
+    -fx-background-color:
+            linear-gradient(to bottom, rgba(6, 8, 14, 0.45), rgba(6, 7, 12, 0.78)),
+            radial-gradient(center 18% 14%, radius 85%, rgba(212, 52, 86, 0.30), rgba(24, 20, 40, 0.58));
 }
 
 .scroll-pane {
-    -fx-background-color: transparent;
+    -fx-background-color: rgba(8, 12, 22, 0.45);
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: rgba(217, 74, 103, 0.35);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 20, 0.2, 0, 8);
 }
 
 .scroll-pane .viewport {
     -fx-background-color: transparent;
 }
 
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(223, 89, 118, 0.65);
+    -fx-background-radius: 8;
+}
+
+.scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: rgba(8, 12, 20, 0.35);
+    -fx-background-radius: 8;
+}
+
 .dialog-container {
-    -fx-padding: 10 5 10 5;
+    -fx-padding: 14 10 14 10;
+    -fx-spacing: 12;
+}
+
+.dialog-row {
+    -fx-padding: 2 0 2 0;
 }
 
 .dialog-text {
-    -fx-background-radius: 10;
-    -fx-padding: 6 10 6 10;
-    -fx-font-size: 13px;
+    -fx-max-width: 280;
+    -fx-background-radius: 16;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 13.5px;
     -fx-wrap-text: true;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.34), 10, 0.15, 0, 2);
 }
 
 .user-dialog {
-    -fx-background-color: #d6ecff;
+    -fx-background-color: linear-gradient(to bottom right, #b62a4f, #6d1f45);
+    -fx-text-fill: #fff3f7;
+    -fx-border-color: rgba(255, 214, 226, 0.45);
+    -fx-border-width: 1;
+    -fx-border-radius: 16 16 4 16;
+    -fx-background-radius: 16 16 4 16;
 }
 
 .bot-dialog {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #e1e1e1;
-    -fx-border-radius: 10;
+    -fx-background-color: rgba(13, 18, 30, 0.88);
+    -fx-text-fill: #dde6ff;
+    -fx-border-color: rgba(109, 151, 230, 0.45);
+    -fx-border-width: 1;
+    -fx-border-radius: 16 16 16 4;
+    -fx-background-radius: 16 16 16 4;
+}
+
+.avatar-image {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.62), 12, 0.28, 0, 2);
 }
 
 .user-input {
-    -fx-background-radius: 6;
-    -fx-padding: 6 10 6 10;
+    -fx-background-color: rgba(8, 11, 20, 0.87);
+    -fx-text-fill: #f5f7ff;
+    -fx-prompt-text-fill: #8b97b8;
+    -fx-highlight-fill: #e8415f;
+    -fx-highlight-text-fill: #ffffff;
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+    -fx-border-color: rgba(107, 125, 167, 0.55);
+    -fx-border-width: 1;
+    -fx-padding: 8 12 8 12;
+    -fx-font-family: "JetBrains Mono", "Menlo", "Consolas", monospace;
+    -fx-font-size: 12.5px;
+}
+
+.user-input:focused {
+    -fx-border-color: rgba(232, 72, 103, 0.9);
+    -fx-effect: dropshadow(gaussian, rgba(232, 72, 103, 0.38), 8, 0.2, 0, 0);
 }
 
 .send-button {
-    -fx-background-color: #4a7bd0;
-    -fx-text-fill: white;
-    -fx-background-radius: 6;
+    -fx-background-color: linear-gradient(to bottom, #ed4f6e, #8c2247);
+    -fx-text-fill: #fff8fa;
+    -fx-font-size: 12.5px;
+    -fx-font-family: "Cinzel", "Georgia", serif;
+    -fx-font-weight: bold;
+    -fx-background-radius: 11;
+    -fx-border-radius: 11;
+    -fx-border-color: rgba(255, 223, 231, 0.45);
+    -fx-border-width: 1;
+    -fx-padding: 8 16 8 16;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.42), 10, 0.2, 0, 3);
+}
+
+.send-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #f7607d, #a12850);
+}
+
+.send-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #b83454, #711635);
+}
+
+.send-button:disabled {
+    -fx-opacity: 0.65;
 }

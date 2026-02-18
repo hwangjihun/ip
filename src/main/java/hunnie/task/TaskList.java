@@ -115,7 +115,7 @@ public class TaskList {
 
     private void validateTaskIndex(int index) throws HunnieException {
         if (index < 0 || index >= tasks.size()) {
-            throw new HunnieException("Invalid task number! You only have " + tasks.size() + " task(s).");
+            throw new HunnieException("Invalid task number. Please enter a valid task number from your list.");
         }
     }
 }

@@ -11,7 +11,6 @@ import hunnie.task.TaskList;
  * Handles user interface operations including reading user input and displaying messages.
  */
 public class Ui {
-    private static final String LINES = "____________________________________________________________";
     private static final String BOT_NAME = "Hunnie";
     private final Scanner scanner;
     private final StringBuilder output;
@@ -71,25 +70,23 @@ public class Ui {
      * Displays the welcome message when the application starts.
      */
     public void showWelcome() {
-        appendLine(LINES);
-        appendLine("Hello! I'm " + BOT_NAME);
-        appendLine("What can I do for you?");
-        appendLine(LINES);
+        appendLine("Hey! I'm " + BOT_NAME + ".");
+        appendLine("Tell me what task you'd like to handle.");
     }
 
     /**
      * Displays the goodbye message when the application exits.
      */
     public void showGoodbye() {
-        appendLine("Bye, i hope i helped in some way! Hope to see you again soon ^^");
-        appendLine(LINES);
+        appendLine("All set for now. Take care.");
+        appendLine("See you next time.");
     }
 
     /**
      * Displays a horizontal line separator.
      */
     public void showLine() {
-        appendLine(LINES);
+        // Intentionally left blank to avoid printing separator lines.
     }
 
     /**
@@ -101,9 +98,9 @@ public class Ui {
     public void showTaskList(TaskList tasks) throws HunnieException {
         int taskCount = tasks.size();
         if (taskCount == 0) {
-            throw new HunnieException("No tasks found!");
+            throw new HunnieException("No tasks in your list right now.");
         }
-        appendLine("Here are the tasks in your list:");
+        appendLine("Here are your current tasks:");
         for (int i = 0; i < taskCount; i++) {
             appendLine((i + 1) + "." + tasks.get(i));
         }
@@ -124,7 +121,7 @@ public class Ui {
      * @param task Task that was marked as not done.
      */
     public void showTaskUnmarked(Task task) {
-        showTaskWithPrefix("OK, I've marked this task as not done yet:", task);
+        showTaskWithPrefix("Okay, I've marked this task as not done yet:", task);
     }
 
     /**
@@ -194,6 +191,6 @@ public class Ui {
     }
 
     private void showTaskCount(int taskCount) {
-        appendLine("Now you have " + taskCount + " task(s) in the list.");
+        appendLine("Now you have " + taskCount + " task(s) in your list.");
     }
 }
