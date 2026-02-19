@@ -9,6 +9,7 @@ import hunnie.ui.Ui;
  * Represents a command to find tasks matching a keyword.
  */
 public class FindCommand extends Command {
+    private static final String NO_MATCHING_TASKS_MESSAGE = "Sorry, I cannot find any matching tasks!";
     private final String keyword;
 
     /**
@@ -32,6 +33,9 @@ public class FindCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) throws HunnieException {
         assert this.keyword != null : "Find keyword should not be null";
         TaskList matchingTasks = tasks.getFilteredTasks(this.keyword);
+        if (matchingTasks.size() == 0) {
+            throw new HunnieException(NO_MATCHING_TASKS_MESSAGE);
+        }
         ui.showTaskList(matchingTasks);
     }
 }
